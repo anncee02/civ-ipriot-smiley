@@ -11,7 +11,7 @@ class Smiley:
     def __init__(self, complexion=None):
         # We have encapsulated the SenseHat object
         self.sense_hat = SenseHat()
-        self.my_complexion = complexion if complexion else self.YELLOW
+        self.my_complexion = complexion or self.YELLOW
 
         X = self.my_complexion
         O = self.BLANK
@@ -26,6 +26,9 @@ class Smiley:
             O, X, X, X, X, X, X, O,
         ]
 
+    def complexion(self):
+        return self.my_complexion
+
     def dim_display(self, dimmed=True):
         """
         Set the SenseHat's light intensity to low (True) or high (False)
@@ -38,6 +41,3 @@ class Smiley:
         Show the smiley on the screen.
         """
         self.sense_hat.set_pixels(self.pixels)
-
-    def complexion(self):
-        return self.my_complexion

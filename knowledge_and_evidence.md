@@ -132,12 +132,12 @@ python3 main.py
 
 4. Though everything in Python is an object, it is sometimes said to have four "primitive" types. Examining the three files `smiley.py`, `sad.py`, and `happy.py`, identify which of the following types are used in any of these files, and give an example of each (use an example from the code, if applicable, otherwise provide an example of your own):
 
-   | Type                    | Used? | Example |
-   | ----------------------- | --- | --------|
-   | int                     | Yes | 255 (in RGB tuples)
-   | float                   |No   | N/A
-   | str                     |No   | N/A       |
-   | bool                    |Yes  | True (parameter in dim_display)
+   | Type                    | Used? | Example                                                                   |
+   | ----------------------- |-------|---------------------------------------------------------------------------|
+   | int                     | Yes   | 255 (in RGB tuples)                                                       
+   | float                   | Yes   | 0.25 (delay in blink)                                                     
+   | str                     | No    | N/A (example: "Happy Smiley" representing a name or label for the smiley) |
+   | bool                    | Yes   | True (parameter in dim_display)                                           
 
 5. Examining `smiley.py`, provide an example of a class variable and an instance variable (attribute). Explain **why** one is defined as a class variable and the other as an instance variable.
 
@@ -175,8 +175,17 @@ python3 main.py
 > 
 3. Give two examples of organizational documentation in the code.
 
-> Docstrings for classes and methods, providing explanations for each function's purpose.
-> Inline comments within methods, such as in draw_mouth and draw_eyes, to describe actions.
+> 1. Docstrings for classes and methods, providing explanations for each function's purpose.
+> Example: class docstring 
+> class Happy(Smiley, Blinkabke):
+>   """
+>   Provides a Smiley with a happy expression
+>   """
+> 2. Inline comments within methods, such as in draw_mouth and draw_eyes, to describe actions.
+> Example: In the Smiley class constructor, there is a comment explaining the logic for setting the complexion:
+> def __init__(self, complexion=None):
+>   # We have encapsulated the SenseHat object
+>   self,sense_hat = SenseHat()
 
 ### Identifying and understanding classes
 
@@ -186,10 +195,11 @@ python3 main.py
   
   Use the following table for your answers:
 
-| Class Name | Super or Sub? | Direct parent(s) |
-| Smiley | Super- | None |
-| Happy    | Sub           | Smiley, Blinkable
-|   Sad      |   Sub         |      Smiley     |
+| Class Name    | Super or Sub?     | Direct parent(s)  |
+| Smiley        | Super             | None              |
+| Happy         | Sub               | Smiley, Blinkable |
+| Sad           | Sub               | Smiley            |
+| Blinkable     | Super             | None              |
 
 2. Explain the concept of abstraction, giving an example from the project (note "implementing an ABC" is **not** in itself an example of abstraction). (Max 150 words)
 
@@ -267,9 +277,10 @@ Unlike the `Happy` smiley, the current implementation of the `Sad` smiley does n
 
 4. How is inheritance used in the blink method, and why is it important for polymorphism?
 
-> Inheritance lets Happy use methods from Smiley, while adding its unique blink behaviour. Polymorphism enables different smileys to be treated as instances of Smiley,
-> with each responding to blink() based on its own implementation. This allows for flexibility in the project, as inheritance allows for polymorphic behaviour 
-> in which a subclass can be treated as an instance of a parent class. 
+> Inheritance allows subclasses like Happy and Sad to use shared methods from Smiley, such as draw_eyes and show. This enables blink in each subclass to correctly function
+> without duplicating code. Inheritance is fundamental to achieving polymorphism in OOP, as it enables a subclass to override or extend the behaviour of a method defined 
+> in its base class. For example, the blink method demonstrates polymorphism. While both Happy and Sad classes inherit from Smiley, they can provide unique implementations 
+> for blink or other inherited methods. 
 > 
 > Reference: 
 > Shiksha Online - Difference Between Inheritance and Polymorphism: https://www.shiksha.com/online-courses/articles/difference-between-inheritance-and-polymorphism-blogId-153349
@@ -317,11 +328,13 @@ Include a screenshot of the sad smiley or the modified `main.py`:
 
   2. **Class Implementation:** `Blinkable` is a class intended to be implemented by other classes. What generic term describes this kind of class, which is designed for implementation by others? **Clue**: Notice the lack of any concrete implementation and the naming convention.
 
-  > The generic term for this kind of class is an interface or Abstract Base Class. The Blinkable class serves as a blueprint for other classes that need to implement the blinking behaviour. This is a common design pattern in which 
-  > abstract classes define essential methods that must be implemented by any class that inherits from it. 
+  > The general term for this kind of class is an abstract class, referred to as Abstract Base Class in Python. The Blinkable class serves as a blueprint for other classes that need to implement the blinking behaviour, ensuring that subclasses define specific implementations 
+  > of the required methods. In many OOP languages, an abstract class can provide partial implementations, while an interface typically defines method signatures. 
+  > Python's ABCs combine aspects of both for flexibility. Blinkable is used as an interface in this regard as it lacks concrete implementation and acts as a contract that 
+  > other classes need to fulfil. 
   > 
   > References: 
-  > Real Python - Implementing an Interface in Python: https://realpython.com/python-interface/
+  > Python.org - abc — Abstract Base Classes: https://docs.python.org/3/library/abc.html
   > Geeks for Geeks - Abstract Base Class in Python: https://www.geeksforgeeks.org/abstract-base-class-abc-in-python/
 
   3. **OO Principle Identification:** Regarding your answer to question (2), which Object-Oriented (OO) principle does this represent? Choose from the following and justify your answer in 1-2 sentences: Abstraction, Polymorphism, Inheritance, Encapsulation.
@@ -416,6 +429,13 @@ Include a screenshot of the sad smiley or the modified `main.py`:
   5. **Update the `complexion` method:** Adjust this method to return `self.my_complexion`, ensuring that whatever color is assigned during instantiation is what the smiley displays.
 
   6. **Verification:** Run the updated code to confirm that Smileys still defaults to yellow unless specified otherwise.
+
+> RESPONSE TO FEEDBACK on why a ternary was used to define self.my_complexion and in what circumstances it would be appropriate and why it was unnecessary in this case: 
+> It did not occur to me until reading the feedback that using the ternary operator in the Smiley class added unnecessary complexity (redundant) without significant benefits, as using the or operator would be enough as a straightforward approach.
+> When appropriate, a ternary operator would be suitable to use when there are two distinct. non-default options to choose between based on a condition. The change has been made in the code.
+> 
+> RESPONSE TO FEEDBACK on why create a complexion if we are referencing my_complexion outside the class: 
+> Similar to the above, I realised that creating both complexion and my_complexion introduced was redundant, as directly referencing self.my_complexion outside the class defeated the point of encapsulation. The refactoring has been done.
 
   ### Flexible Colors – Step 3
 

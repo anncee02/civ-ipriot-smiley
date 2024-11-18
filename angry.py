@@ -24,7 +24,7 @@ class Angry(Smiley):
         left_eye = [9, 10]
         right_eye = [13, 14]
         for pixel in left_eye + right_eye:
-            self.pixels[pixel] = self.BLANK if wide_open else self.my_complexion
+            self.pixels[pixel] = self.BLANK if wide_open else self.complexion()
 
     def blink(self, delay=0.25):
         """
